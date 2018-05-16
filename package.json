@@ -1,5 +1,5 @@
 {
-  "name": "generator-odr-frontend",
+  "name": "generator-darnley",
   "version": "0.0.1",
   "description": "Yeoman generator for our frontend assets. Use alongside a craft generator",
   "main": "index.js",
