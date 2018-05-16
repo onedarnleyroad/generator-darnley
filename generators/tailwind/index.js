@@ -6,6 +6,7 @@ module.exports = class extends Generator {
 		super(args, opts);
 	}
 
+
 	initializing() {
 		if ( !this.options.parent ) {
 			this.composeWith(require.resolve('../prompts'));
@@ -14,19 +15,34 @@ module.exports = class extends Generator {
 
 	writing() {
 		
-		this.log("Email Write");
-		
-		const pkgJson = {
+		// let options = this.config.getAll();
+		this.log("Tailwind writing");
+		this.log( this.config.getAll() );
+
+	 	this.fs.copyTpl(
+	    	this.templatePath('src/'),
+	    	this.destinationPath('src/'),
+      		{  });
+
+	 	this.fs.copyTpl(
+	    	this.templatePath('tailwind.js'),
+	    	this.destinationPath('tailwind.js'),
+      		{  });
+
+	 	const pkgJson = {
 			devDependencies: {
-		   		'gulp-juice': '^0.1.0',
+		   		'tailwindcss': '^0.5.3',
+		   		'gulp-postcss': '^7.0.0',
+
 			}
 		};
 
 	 	this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
 	}
 
+
 	install() {
-		this.log("Email Install");
+		this.log("Tailwind Install");
 		this.npmInstall();
 	}
 

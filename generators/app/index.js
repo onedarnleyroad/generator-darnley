@@ -7,34 +7,24 @@ module.exports = class extends Generator {
 	}
 
 	initializing() {
-    	this.composeWith(require.resolve('../email'));
-	}
+		this.composeWith(require.resolve('../prompts'));
+    	
 
-	prompting() {
-		return this.prompt([{
-			type    : 'input',
-			name    : 'name',
-			message : 'Your project name',
-			store 	: true,
-			default : this.appname // Default to current folder name
-		}]).then((answers) => {
-			this.options.name = answers.name;
-
+		[  // List tasks for the default generator:
+			'../tailwind',
+			'../email',
+		].forEach( t => {
+			this.composeWith(require.resolve( t ), { parent: true });
 		});
+	
 	}
-
-
-	debug() {
-		this.name;
-
-	}
-
 
 	writing() {
-	 	this.fs.copyTpl(
-	    	this.templatePath('tailwind.js'),
-	    	this.destinationPath('tailwind.js'),
-      		{ title: this.options.name });
+	 	
+	}
+
+	install() {
+		this.npmInstall();
 	}
 
 };
