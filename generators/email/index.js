@@ -15,6 +15,11 @@ module.exports = class extends Generator {
 	writing() {
 		
 		this.log("Email Write");
+
+		this.fs.copyTpl(
+	    	this.templatePath('./'),
+	    	this.destinationPath('src/email/'),
+      		{  });
 		
 		const pkgJson = {
 			devDependencies: {
