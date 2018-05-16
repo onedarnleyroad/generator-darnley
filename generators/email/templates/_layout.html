@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+		<title>{{ block('title') }} - {{ siteName }}</title>
+		{#
+			Styles that WON'T be inlined by premailer. Campaign monitor may still though...
+		#}
+		{% includeCss source('_readonly/css/email-head.min.css') %}
+		<!--[if mso]>
+			<style type="text/css">
+				.body-text {
+					font-family: Arial, sans-serif;
+				}
+			</style>
+		<![endif]-->
+	</head>
+	<body>
+		<table id="main" width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ebebeb">
+			<tbody>
+				<tr>
+					<td valign="top" align="center">
+						<table border="0" cellpadding="0" cellspacing="0" width="600" bgcolor="#ffffff" class="container-table">
+							<tbody>
+								<tr>
+									<td align="center" valign="top" width="100%" class="">
+										<!-- Preheader -->
+										<table cellpadding="0" cellspacing="0" border="0" height="44" width="100%">
+											<tr>
+												<td background="{{ craft.config.environmentVariables['baseUrl'] }}assets/img/email/preheader.jpg" bgcolor="#324851" valign="middle" align="center">
+													<!--[if gte mso 9]>
+													<v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="mso-width-percent:1000;height:44px;">
+														<v:fill type="tile" src="{{ craft.config.environmentVariables['baseUrl'] }}assets/img/email/preheader.jpg" color="#324851" />
+														<v:textbox inset="0,0,0,0">
+													<![endif]-->
+													<div class="preheader">
+                                                        {% block preheader %}
+
+                                                        {% endblock %}
+													</div>
+													<!--[if gte mso 9]>
+													</v:textbox>
+													</v:rect>
+													<![endif]-->
+												</td>
+											</tr>
+										</table>
+										<!-- Preheader -->
+
+										<!-- Header -->
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tr>
+												<td valign="top" align="center">
+													<a href="{{ craft.config.environmentVariables['baseUrl'] }}" style="display:inline-block; cursor:pointer; text-align:center;">
+														<img src="{{ craft.config.environmentVariables['baseUrl'] }}assets/img/email/header.jpg" height="291" width="600" border="0" alt="Granor Farm" class="image">
+													</a>
+												</td>
+											</tr>
+										</table>
+										<!-- Header -->
+
+										<!-- Content Area -->
+										{% block content %}
+
+										{% endblock %}
+										<!-- Content Area -->
+
+										{#
+										<!-- Content Divider -->
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tbody>
+												<!-- Spacer -->
+												<tr>
+													<td height="10" bgcolor="#ebebeb"></td>
+												</tr>
+												<!-- Spacer -->
+											</tbody>
+										</table>
+										<!-- Content Divider -->
+
+										<!-- FAQS Content Area -->
+										{% block faqs %}
+
+										{% endblock %}
+										#}
+										<!-- Content Area -->
+
+										<!-- Logo Area -->
+										<table cellpadding="0" cellspacing="0" border="0" width="100%">
+											<tbody>
+												<!-- Logo -->
+												<tr>
+													<td valign="top" align="center" bgcolor="#f5f6f6">
+														<img src="{{ craft.config.environmentVariables['baseUrl'] }}assets/img/email/logo.png" height="142" width="600" border="0" alt="Granor Farm Logo" class="image">
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<!-- Logo Area -->
+
+										<!-- Footer Area -->
+										{% include '_readonly/email/_includes/footer' %}
+										<!-- Footer Area -->
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
