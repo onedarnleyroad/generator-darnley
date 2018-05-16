@@ -39,3 +39,8 @@ Since we have a lot of tasks, we might want to share config between them and yet
 ## Thoughts
 Should we just bundle craft into this as well? It's complicated enough that perhaps we should keep that as a separate project whereas all these generally depend on the gulpfile. 
 
+## Gulp tasks
+
+If people run some of the generators, can we make a gulpfile that has some or all of the tasks needed?
+
+One option is to create a folder of gulp tasks (this will work well with gulp 4, which seems to encourage tasks as simple functions now) and then use package.json to store config for which tasks get registered, and read that in the gulpfile. 
