@@ -34,3 +34,5 @@ Since we have a lot of tasks, we might want to share config between them and yet
 
 ## Thoughts
 Should we just bundle craft into this as well? It's complicated enough that perhaps we should keep that as a separate project whereas all these generally depend on the gulpfile. 
+
+Should we rename to soemthign easier to type? `odrfe`?  Or give it some jaunty branded name? `yo darnley`?
