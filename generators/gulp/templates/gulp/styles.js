@@ -5,10 +5,23 @@ const $ = gulpLoadPlugins();
 const tailwindcss = require('tailwindcss');
 const cssnano = require("cssnano");
 const gulp = require('gulp');
+const glob = require("glob");
+const clearModule = require("clear-module");
 
+const refresh = function() {
+	
+	clearModule('../tailwind');
 
+	glob( "./src/config/**/*.js", function( err, files ) {
 
-module.exports = function( done ) {	
+		files.map( function( entry ) {
+			// console.log("Refreshing", entry);
+			clearModule( entry );
+		});
+	});
+};
+
+const compile = function( done ) {	
 
 	var sassVars = {
 		fontDefs: twConfig.fontPaths
@@ -97,4 +110,9 @@ module.exports = function( done ) {
 	}
 
 	return pipeline;
-}
+};
+
+
+module.exports = {
+	compile, refresh
+};

@@ -21,13 +21,10 @@ module.exports = class extends Generator {
 	    	this.destinationPath('src/email/'),
       		{  });
 		
-		const pkgJson = {
-			devDependencies: {
-		   		'gulp-juice': '^0.1.0',
-			}
-		};
+		
 
-	 	this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
+
+	 	
 	}
 
 	install() {

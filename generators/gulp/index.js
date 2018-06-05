@@ -30,6 +30,7 @@ module.exports = class extends Generator {
     			"gulp-babel-minify": "^0.2.0",
     			"cssnano": "^3.10.0",
 		   		'gulp': '^4.0.0',
+		   		"clear-module": "^2.1.0",
 		   		"gulp-changed": "^1.3.2",
 		   		"gulp-load-plugins": "^1.5.0",
     			"gulp-sass-vars": "^1.3.0",

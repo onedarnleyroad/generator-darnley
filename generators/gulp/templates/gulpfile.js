@@ -41,28 +41,52 @@ const vendor = function() {
 	return pipeline;
 
 };
+
 exports.vendor = vendor;
 
 /* STYLES --------------------------------------- */
-import styles from './gulp/styles';
-exports.styles = styles;
+const styles = require('./gulp/styles');
+gulp.task('styles', styles.compile );
 
 /* SCRIPTS --------------------------------------- */
 const scripts = require('./gulp/scripts');
-exports.scripts = scripts.compile;
-exports.scriptWatcher = scripts.watcher;
+gulp.task('scripts', scripts.compile );
 
 /* EMAIL --------------------------------------- */
 const email = require('./gulp/email');
-exports.email = email;
+gulp.task('email', email );
 
 /* SVG --------------------------------------- */
 const svg = require('./gulp/svg');
 exports.svg = svg;
 
 
+/* SERVE --------------------------------------- */
+// Launch browser sync
+const serve = function() {
+		
+	scripts.watcher();
+
+	clearModule('./tailwind.js');
+
+	
+
+	gulp.watch( config.src.css, 
+		gulp.series( styles.refresh, 'styles' )
+	);
+
+	gulp.watch( config.src.svg, gulp.parallel('svg') );
+		
+	browserSync( config.browserSync );
+
+};
+
+
+
+
+
 /* BUILD --------------------------------------- */
-const build = gulp.parallel( scripts.compile, styles, images, email, svg );
-exports.default = build;
+// const build = gulp.parallel( scripts.compile, styles.compile, images, email, svg );
+// exports.default = build;
 
 
