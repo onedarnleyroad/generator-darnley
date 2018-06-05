@@ -12,6 +12,8 @@ module.exports = class extends Generator {
 
 		[  // List tasks for the default generator:
 			'../tailwind',
+			'../javascript',
+			'../gulp',
 			'../email',
 		].forEach( t => {
 			this.composeWith(require.resolve( t ), { parent: true });

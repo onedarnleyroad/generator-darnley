@@ -15,27 +15,18 @@ module.exports = class extends Generator {
 
 	writing() {
 		
-		// let options = this.config.getAll();
-		this.log("Tailwind writing");
-		this.log( this.config.getAll() );
-
 	 	this.fs.copyTpl(
 	    	this.templatePath('src/'),
 	    	this.destinationPath('src/'),
       		{  });
 
-	 	this.fs.copyTpl(
-	    	this.templatePath('tailwind.js'),
-	    	this.destinationPath('tailwind.js'),
-      		{  });
-
 	 	const pkgJson = {
 			devDependencies: {
-				"extend": "^3.0.1",
-		   		'tailwindcss': '^0.5.3',
-		   		'tailwind-aspect-ratio': 'latest',
-		   		'gulp-postcss': '^7.0.0',
-
+				"axios": "^0.17.1",
+				"lazysizes": "^4.0.1",
+				"loadjs": "^3.5.1",
+				"fontfaceobserver": "^2.0.13",
+				"promise-polyfill": "^6.1.0"
 			}
 		};
 

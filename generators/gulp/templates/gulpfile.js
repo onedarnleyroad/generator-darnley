@@ -1,91 +1,68 @@
 'use strict';
 
 const gulp = require('gulp');
-const tailwindcss = require('tailwindcss');
-const gulpLoadPlugins = require('gulp-load-plugins');
-const $ = gulpLoadPlugins();
-const path = require('path');
 const config = require('./gulpfile.config');
-const twConfig = require('./tailwind');
 
 
-gulp.task('styles', function( done ) {
+/* IMAGES --------------------------------------- */
+const images = function () {
 
-	var sassVars = {
-		fontDefs: twConfig.fontPaths
-	};
+	return gulp.src( config.src.img )
+		// Only send through changed files, as this is a somewhat 'heavy' operation
+		.pipe($.changed( config.dest.img ))
 
-	// prepare colours:
-	for ( var property in twConfig.colors ) {
-
-		let color = twConfig.colors[ property ];
-
-		sassVars[ property ] = color;
-
-	}
-
-	// config.dest.css should now be an array eg:
-	// [ './public/css', './craft/templates/_readonly' ]
-	// as the pipeline can be split up, and gulp.dest added
-	// programmatically.
-	let destinations = config.dest.css;
-
-
-	// Start the pipeline:
-	var pipeline = gulp.src( config.src.css )
-		// Only send through changed files (speed)
-		.pipe($.changed( config.dest.css ))
-
-		// handle errors without having entire task fail
-		.pipe($.plumber())
-
-		// sourcemaps
-		.pipe($.sourcemaps.init())
-
-		.pipe($.sassVars(sassVars, { verbose: false }))
-
-		// post process sass
-		.pipe($.sass().on('error', $.sass.logError))
-
-		// postprocess vendor prefixes
-		.pipe($.autoprefixer({
-			browsers: [
-				'last 2 versions',
-				'ie 9'
-			]
-		}))
-
-		.pipe($.postcss([
-			tailwindcss('./tailwind.js'),
+		// need to configure this to our tastes.
+		.pipe($.imagemin([
+			// ??
 		]))
 
-		.on('error', done)
+		// save output to public
+		.pipe(gulp.dest( config.dest.img ));
+};
+exports.images = images;
 
-		// write sourcemaps to a subfolder
-		.pipe($.sourcemaps.write('maps'));
+/* VENDOR --------------------------------------- */
+const vendor = function() {
+	
+	let destinations = config.dest.vendor;
+
+	let pipeline = gulp.src( config.src.vendor )
+		.pipe($.changed( config.src.vendor ))
+
+		// go through multiple destinations:
+	if ( Array.isArray( destinations ) ) {
+		destinations.forEach( d => {
+			pipeline = pipeline.pipe(gulp.dest( d ));
+		});	
+	} else {
+		pipeline = pipeline.pipe(gulp.dest( destinations ));
+	}
+		
+	return pipeline;
+
+};
+exports.vendor = vendor;
+
+/* STYLES --------------------------------------- */
+import styles from './gulp/styles';
+exports.styles = styles;
+
+/* SCRIPTS --------------------------------------- */
+const scripts = require('./gulp/scripts');
+exports.scripts = scripts.compile;
+exports.scriptWatcher = scripts.watcher;
+
+/* EMAIL --------------------------------------- */
+const email = require('./gulp/email');
+exports.email = email;
+
+/* SVG --------------------------------------- */
+const svg = require('./gulp/svg');
+exports.svg = svg;
 
 
-	// go through multiple destinations:
-	destinations.forEach( d => {
-		pipeline = pipeline.pipe(gulp.dest( d ));
-	});
+/* BUILD --------------------------------------- */
+const build = gulp.parallel( scripts.compile, styles, images, email, svg );
+exports.default = build;
 
-	// Continue the pipeline:
-	pipeline = pipeline
-			.pipe( $.filter( ['**/*.css'] ) )
-			.pipe($.postcss([
-				cssnano({
-					preset: 'default',
-					discardUnused: false
-				})
-			 ]))
 
-			// rename with *.min extension
-			.pipe($.rename({
-				extname: '.min.css'
-			}));
-
-	destinations.forEach( d => {
-		pipeline = pipeline.pipe(gulp.dest( d ));
-	});
-});
