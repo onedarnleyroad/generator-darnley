@@ -1,0 +1,27 @@
+
+
+
+// Make all link colors explicitly set by their parents / class, rather than globally set.
+a {
+	color: inherit
+}
+
+a:link {
+	text-decoration: none;
+	// color: config('colors.link');
+}
+
+a:hover {
+	// color: config('colors.linkHover');
+}
+
+.color-inherit {
+	a:not([class*="text-"]) {
+		color: inherit;
+	}
+}
+
+
+.group:hover .group-hover\:underline {
+	text-decoration: underline;
+}

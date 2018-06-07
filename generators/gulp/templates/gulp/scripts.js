@@ -1,10 +1,13 @@
-
+'use strict';
 const twConfig = require('../tailwind');
 const browserify = require("browserify");
 const gulpLoadPlugins = require('gulp-load-plugins');
 const config = require('../gulpfile.config');
 const $ = gulpLoadPlugins();
 const gulp = require('gulp');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const watchify = require('watchify');
 
 // Given an entry point, create a browserify instance,
 // set up our transforms etc
@@ -21,58 +24,59 @@ const createBrowserifyInstance = function( entry ) {
 				plugins: ["transform-es2015-classes"],
 				presets: ['env', 'es2015'],
 				global: true
-			}, { loose: true })
+			}, { loose: true });
 };
 
 // after a bundle this processes things after, eg minify,
 // source maps, pipe to destination.
-const createBundle = function( watcher, entry, dest, craftDest ) {
+const createBundle = function( watcher, entry, reject ) {
 	let destinations = config.dest.js;
 
 	let pipeline = watcher
 			.bundle()
 			.on('error', function (error) {
 				console.log('error:', error.message );
+				if ( reject ) {
+					reject();
+				}
 				this.emit('end');
 			})
 			.pipe( source( entry ) )
 			.pipe(buffer())
-			.pipe( $.sourcemaps.init({loadMaps: true}))
-			.pipe( $.sourcemaps.write())
+
 			.pipe( $.rename({
 				dirname: '' // glob returns full path
 			}) );
 
 
-	if ( Array.isArray( destinations ) ) {
-		destinations.forEach( d => {
-			pipeline = pipeline.pipe(gulp.dest( d ));
-		});	
-	} else {
-		pipeline = pipeline.pipe(gulp.dest( destinations ));
-	}
+		if ( Array.isArray( destinations ) ) {
+			destinations.forEach( d => {
+				pipeline = pipeline.pipe(gulp.dest( d ));
+			});	
+		} else {
+			pipeline = pipeline.pipe(gulp.dest( destinations ));
+		}
 
-	pipeline = pipeline.pipe( gulp.dest( dest ) )
-			.pipe( gulp.dest( craftDest ) )
-			.pipe( $.rename({
-				extname: '.min.js'
-			}) )
-			.pipe( $.babelMinify({
-				mangle: {
-					keepClassName: true
-				}
-			}));
+		pipeline = pipeline
+				.pipe( $.rename({
+					extname: '.min.js'
+				}) )
+				.pipe( $.babelMinify({
+					mangle: {
+						keepClassName: true
+					}
+				}));
 
-	if ( Array.isArray( destinations ) ) {
-		destinations.forEach( d => {
-			pipeline = pipeline.pipe(gulp.dest( d ));
-		});	
-	} else {
-		pipeline = pipeline.pipe(gulp.dest( destinations ));
-	}
+		if ( Array.isArray( destinations ) ) {
+			destinations.forEach( d => {
+				pipeline = pipeline.pipe(gulp.dest( d ));
+			});	
+		} else {
+			pipeline = pipeline.pipe(gulp.dest( destinations ));
+		}
 
-	return pipeline;
-}
+		return pipeline;
+};
 
 
 // Create a watcher from an entry point
@@ -98,9 +102,7 @@ const createWatcher = function( entry ) {
 
 	/*========================================*/
 
-	var watcher = watchify(
-		createBrowserifyInstance( entry )
-	);
+	var watcher = watchify( createBrowserifyInstance( entry ) );
 
 	var bundle = function() {
 		return createBundle( watcher, entry, dest, craftDest);
@@ -147,18 +149,15 @@ const compile = function( done ) {
 
 		return new Promise(function (resolve, reject) {
 
-			var dest = config.dest.js;
-			var craftDest = config.dest.jsCraft;
-
 			var updateStart = Date.now();
 
 			console.log('Compiling ' + entry);
 
 			var bs = createBrowserifyInstance( entry );
 
-			pipeline = createBundle( bs, entry, dest, craftDest )
+			let pipeline = createBundle( bs, entry, reject )
 				.on('end', function () {
-					console.log('Compiled ' + dest + '/' + entry, (Date.now() - updateStart) + 'ms');
+					console.log('Compiled ' + entry, (Date.now() - updateStart) + 'ms');
 					resolve();
 				});
 		});

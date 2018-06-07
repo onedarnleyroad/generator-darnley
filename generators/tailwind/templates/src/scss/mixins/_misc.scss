@@ -1,0 +1,26 @@
+
+@mixin whenSidebarOpen() {
+	[data-sidebar="open"] & {
+		@content;
+	}
+}
+
+
+@mixin breakpoint( $keyword ) {
+	@media ( config('breakpoints.#{$keyword}') ) {
+		@content;
+	}
+}
+@mixin placeholder {
+ &::-webkit-input-placeholder {@content}
+ &:-moz-placeholder           {@content}
+ &::-moz-placeholder          {@content}
+ &:-ms-input-placeholder      {@content}
+}
+
+
+@mixin apply-cta() {
+	@apply .uppercase;
+	@apply .tracking-xwide;
+	@apply .font-bold;
+}

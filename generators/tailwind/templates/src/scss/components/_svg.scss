@@ -1,0 +1,24 @@
+.svgicon {
+	@apply .inline-flex;
+	@apply .items-center;
+	@apply .relative;
+	@apply .m-0;
+
+	svg {
+		@apply .block;
+		@apply .m-auto;
+		width: 1em;
+		height: 1em;
+		@apply .fill-current;
+	}
+}
+
+.svgfull {
+	@apply .w-full;
+	@apply .h-full;
+
+	svg {
+		@apply .w-full;
+		@apply .h-full;
+	}
+}

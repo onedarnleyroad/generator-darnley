@@ -1,0 +1,75 @@
+
+/* RESPONSIVE SHOW/HIDE */
+
+.tablet-below {
+	@include breakpoint('laptop') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+.above-laptop {
+	@include breakpoint('tablet-below') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+.not-tablet {
+	@include breakpoint('tablet-only') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+.tablet-only {
+	@include breakpoint('not-tablet') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+.not-mobile {
+	@include breakpoint('mobile-only') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+.mobile-only {
+	@include breakpoint('not-mobile') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+.laptop-only {
+	@include breakpoint('not-laptop') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+
+.desktop-only {
+	@include breakpoint('laptop-below') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+.not-desktop {
+	@include breakpoint('desktop') {
+		display: none !important;
+		background: none !important;
+	}
+}
+
+
+// Edge case for checkout
+.tinymobile\:-mx-6 {
+	@media screen and (max-width: 330px) {
+		margin-left: -1.5rem;
+		margin-right: -1.5rem;
+	}
+}

@@ -1,0 +1,31 @@
+// These differ from .text-h1 as they are more opinionatd
+.visually-hidden {
+	position: absolute !important;
+	overflow: hidden !important;
+	clip: rect(0 0 0 0) !important;
+	height: 1px; width: 1px !important;
+	margin: -1px !important;
+	padding: 0 !important;
+	border: 0 !important;
+}
+
+button {
+	color: inherit;
+}
+
+input,
+select,
+textarea,
+button {
+	// When a focus border has been applied,
+	// you can safely kill the outline.
+	&[class*="focus:border-"]:focus {
+		outline: none;
+	}
+}
+
+button.focus--mouse:focus {
+	// Ensure this is covered with other styles!
+	outline: none;
+}
+

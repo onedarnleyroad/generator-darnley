@@ -23,6 +23,7 @@ module.exports = class extends Generator {
 	 	const pkgJson = {
 			devDependencies: {
     			"babelify": "^8.0.0",
+    			"gulp-rimraf":"latest",
 		   		'browserify': '16.2.2',
 		   		"babel-core": "^6.26.3",
 		   		"browserify-shim": "^3.8.14",
@@ -47,7 +48,8 @@ module.exports = class extends Generator {
     			"watchify": "^3.9.0",
     			"optional-require": "^1.0.0",
     			"vinyl-buffer": "^1.0.0",
-				"vinyl-source-stream": "^1.1.0",
+    			'gulp-print': "latest",
+				"vinyl-source-stream": "^2.0.0",
 			}
 		};
 

@@ -1,11 +1,10 @@
+'use strict';
 const juice = require('gulp-juice');
 const gulpLoadPlugins = require('gulp-load-plugins');
 const config = require('../gulpfile.config');
 const $ = gulpLoadPlugins();
 const fs = require('fs');
 const gulp = require('gulp');
-
-
 
 
 module.exports = function(){

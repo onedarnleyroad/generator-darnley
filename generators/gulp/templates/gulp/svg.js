@@ -1,4 +1,4 @@
-
+'use strict';
 const gulpLoadPlugins = require('gulp-load-plugins');
 const config = require('../gulpfile.config');
 const $ = gulpLoadPlugins();
@@ -25,12 +25,11 @@ module.exports = function () {
 		
 
 	pipeline = gulp.src( config.src.svg )
-
 		.pipe($.svgmin())
 		.pipe($.svgSymbols({
 			title: '%f icon',
 			id: 'svg-%f'
-		}))
+		}));
 
 	if ( Array.isArray( destinations ) ) {
 		destinations.forEach( d => {

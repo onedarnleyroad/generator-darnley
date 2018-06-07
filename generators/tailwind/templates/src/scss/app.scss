@@ -1,3 +1,22 @@
+@tailwind preflight;
 
+/*----------  Mixins  ----------*/
+@import "mixins/misc";
+
+/*----------  Vendors  ----------*/
+// @import "vendors/flickity";
+
+
+/*----------  Components  ----------*/
+@import "components/text";
+@import "components/links";
+@import "components/misc";
+@import "components/svg";
+@import "components/animation";
+@import "components/responsive";
+
+
+/*----------  Layouts  ----------*/
+// @import "layouts/...";
 
 @tailwind utilities;

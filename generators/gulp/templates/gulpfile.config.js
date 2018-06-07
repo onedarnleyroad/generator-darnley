@@ -9,7 +9,7 @@ const craftReadonly = './craft/templates/_readonly/';
 const public 	= 'public';
 const assets 	= 'assets';
 const publicAssets = public + '/' + assets + '/';
-const proxy	= 'https://local.granorfarm.com';
+const proxy	= 'https://mysite.com';
 
 let _exports = {
 
@@ -28,7 +28,8 @@ let _exports = {
 		svg: [ publicAssets + 'svg', 	craftReadonly + 'svg'],
 		email: craftReadonly + 'email',
 		img: publicAssets + 'img',
-		vendor: publicAssets + 'vendor'
+		vendor: publicAssets + 'vendor',
+		preload: craftReadonly + 'html'
 	},
 
 	emailCssFile: craftReadonly + 'css/email-inline.css',

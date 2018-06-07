@@ -14,7 +14,7 @@ module.exports = class extends Generator {
 			store 	: true,
 			default : this.appname // Default to current folder name
 		}]).then((answers) => {
-			this.config.set('testConfig', 'four');
+			// this.config.set('testConfig', 'four');
 		});
 	}
 

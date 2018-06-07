@@ -1,0 +1,15 @@
+// FLEX ORDER
+@for $i from 0 through 10 {
+	@responsive {
+		.order-#{$i} {
+	    	order: $i;
+		}
+	}
+}
+
+// Allow to unset:
+@responsive {
+	.order-auto {
+		order: initial;
+	}
+}

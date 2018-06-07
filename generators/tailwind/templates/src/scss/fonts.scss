@@ -1,0 +1,33 @@
+
+// $fontDefs has been injected by gulp-sass-vars, and should
+// be a definition from config/fonts.js
+
+$length: length($fontDefs);
+
+@each $vars in $fontDefs {
+
+	$i: index($fontDefs, $vars);
+
+	$fontName: 	nth( nth( $vars, 1 ), 2 );
+	$weight: 	nth( nth( $vars, 2 ), 2 );
+	$style: 	nth( nth( $vars, 3 ), 2 );
+	$srcs: 		nth( nth( $vars, 4 ), 2 );
+
+	@font-face {
+		font-family: '#{$fontName}';
+		font-weight: unquote($weight);
+		font-style: unquote($style);
+
+
+		$srcOutput: null;
+
+		@each $src in $srcs {
+			$format: nth( nth($src,2), 2);
+			$url: nth( nth($src,1), 2);
+
+			$srcOutput: append($srcOutput, url('#{$url}') format('#{$format}'), comma);
+		}
+
+		src: $srcOutput;
+	}
+}

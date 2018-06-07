@@ -1,0 +1,324 @@
+
+/*----------  GLOBAL TEXT SETUP  ----------*/
+
+html {
+	font-size: 100%;
+
+	@include breakpoint('laptop-only') {
+		font-size: 90%;
+	}
+}
+
+
+body {
+	
+	@apply .font-sans;
+
+	.fontface--timeout & {
+		@apply .font-pre-sans;
+	}
+}
+
+/*----------  RTE / VARIOUS TEXT  ----------*/
+
+// Lobotomised Owl, apply the same gaps to everything:
+.textowl {
+	+ .textowl,
+	+ .textowl-neighbor,
+	> * + * {
+		margin-top: 1em;
+	}
+
+	+ .textowl > h2:first-child,
+	+ .textowl > h3:first-child {
+		margin-top: 1em;
+	}
+
+	+ .textowl > h5:first-child,
+	> * + h5 {
+		margin-top: 2em;
+	}
+
+	+ .textowl > h4:first-child,
+	> * + h4 {
+		margin-top: 1.2em;
+	}
+
+	> h1:first-child {
+		margin-bottom: 1.875rem;
+
+		+ h2,
+		+ h4,
+		+ h3 {
+			margin-top: -0.2rem;
+		}
+	}
+
+
+	> img {
+		margin-top: 1.1rem;
+		margin-bottom: 1.1rem;
+	}
+
+	> img + figcaption {
+		@apply .mt-2;
+	}
+
+	> *:last-child {
+		margin-bottom: 0;
+	}
+
+	.button {
+		// @include breakpoint('mobile-only') {
+			@apply .mr-3;
+		// }
+	}
+
+	> .button,
+	.button:only-child {
+		
+		@apply .mt-3;
+
+		@screen tablet {
+			@apply .mt-6;
+		}
+	}
+}
+
+// the neighbor means we can give the neighbouring margin and preserve
+// the margin rhythm, but we don't have to let all its children inherit
+// it (good for custom things like chart)
+.textowl-neighbor + .textowl-neighbor {
+	@apply .mt-6;
+}
+
+// RTE, use in conjuction with .textowl, this applies
+// some more opinionated styles.
+.rte {
+
+	@apply .text-base;
+
+	@screen tablet {
+		
+		&.text-base {
+			@apply .text-base;
+		}
+	}
+
+	.h1 {
+		@apply .max-w-sm;
+	}
+
+	hr {
+		@apply .border-t;
+		// @apply .border-keyline;
+		@apply .my-6;
+		@screen tablet {
+			@apply .my-8;
+		} 
+	}
+
+	> p,
+	> ul,
+	> blockquote,
+	> span,
+	> ol,
+	> h2,
+	> h3,
+	> h4,
+	> h5,
+	> h6,
+	> button,
+	> a {
+		@apply .max-w-md;
+	}
+
+	
+	img {
+		@apply .max-w-lg;
+	}
+
+	a:not(.button) {
+		// Apply link colours...
+
+		&:hover {
+			
+		}
+	}
+
+
+	
+
+
+	// Standard styles
+
+	ul {
+		list-style-type: none;
+		padding-left: 1.5em;
+
+		@screen tablet {
+			padding-left: 2em;
+		}
+	}
+
+	li {
+		line-height: 1.4;
+		position: relative;
+
+		ol,
+		ul,
+		+ li {
+			@apply .mt-4;
+		}
+	}
+	
+	// Custom Counters:
+	ol {
+		counter-reset: ol-counter;
+		list-style-type: none;
+		padding-left: 1.5em;
+
+		@screen tablet {
+			padding-left: 2em;
+		}
+
+
+		li {
+
+			&:before {
+				content: counter(ol-counter) ".";
+				counter-increment: ol-counter;
+				left: -1.5em;
+				// font-weight: bold;
+
+				@screen tablet {
+					left: -2em;
+				}
+
+				position: absolute;
+				top: 0;
+			}
+		}
+
+		ol {
+			counter-reset: ol-inner-counter;
+			padding-left: 2em;
+
+			@screen tablet {
+				padding-left: -2.5em;
+			}
+
+			li:before {
+				left: -2em;
+				@screen tablet {
+					left: -2.5em;
+				}
+				content: counter(ol-counter) "." counter(ol-inner-counter) ".";
+				counter-increment: ol-inner-counter;
+			}
+
+			ol {
+				counter-reset: ol-inner-inner-counter;
+				padding-left: 2.5em;
+				@screen tablet {
+					padding-left: -3em;
+				}
+
+				li:before {
+					left: -2.5em;
+					@screen tablet {
+						left: -3em;
+					}
+					content: counter(ol-counter) "." counter(ol-inner-counter) "." counter(ol-inner-inner-counter) ".";
+					counter-increment: ol-inner-inner-counter;
+				}
+
+				// and so on until infinity....
+			}
+		}
+	}
+
+	ol li {
+
+	}
+	
+	// Custom LI discs
+	ul li {
+
+
+		&:before {
+			// content: "\2022";
+			// left: -1.5em;
+
+			// @screen tablet {
+			// 	left: -2em;
+			// }
+			// position: absolute;
+			// top: 0;
+		}
+
+
+
+		li {
+			// &:before {
+			// 	content: "\2014";
+			// }
+		}
+	}
+
+}
+
+
+/*----------  STYLE COMPILATIONS  ----------*/
+// Unlike simple setting size,
+// the h1-h4 etc are opinionated
+// styles, they set things like
+// uppercase, weight etc.
+
+h1,h2,h3,h4,h5,h6,
+.h1,.h2,.h3,.h4,.h5,.h6 {
+
+}
+
+
+h1, .h1 {
+
+}
+h2, .h2 {
+
+}
+h3, .h3 {
+	
+
+
+}
+h4, .h4 {
+	
+}
+
+h5, .h5,
+h6, .h6 {
+	
+}
+
+
+
+.p {
+	
+}
+
+
+
+.cta {
+
+}
+
+
+
+
+
+
+.lead-in {
+	
+}
+
