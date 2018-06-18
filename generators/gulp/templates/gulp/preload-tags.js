@@ -31,6 +31,12 @@ module.exports = function() {
 
 		});
 
+		if ( text.length === 0 ) {
+			// Purge complains about empty files, 
+			// so this is a quick fix.
+			text = "<!-- no fonts -->";
+		}
+
 		writeFile( config.dest.preload, text.trim(), (err) => {
 			if (err) {
 				console.error("Couldn't write preload file");
