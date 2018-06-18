@@ -1,7 +1,7 @@
 /*----------  Lazyloading:  ----------*/
 const lazysizes = require("lazysizes");
 
-import onSrcLoad from 'libs/helpers';
+import { onSrcLoad } from 'libs/helpers';
 
 // Does <img> out of the box, but we need some additions:
 document.addEventListener('lazybeforeunveil', function(e) {

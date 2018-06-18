@@ -69,7 +69,7 @@ module.exports = {
 	|
 	*/
 
-	colors: colors.text,
+	colors: colors.colors,
 
 
 	/*

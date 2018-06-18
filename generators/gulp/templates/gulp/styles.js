@@ -7,6 +7,11 @@ const tailwindcss = require('tailwindcss');
 const cssnano = require("cssnano");
 const gulp = require('gulp');
 
+class TailwindExtractor {
+  static extract(content) {
+    return content.match(/[A-z0-9-:\/]+/g);
+  }
+}
 
 module.exports = function( done ) {
 
@@ -84,6 +89,14 @@ module.exports = function( done ) {
 					discardUnused: false
 				})
 			 ]))
+
+			.pipe( $.purgecss({
+				content: config.purgecss,
+				extractors: [{
+					extractor: TailwindExtractor,
+					extensions: ["html"]
+				}]
+			}) )
 
 			// rename with *.min extension
 			.pipe($.rename({

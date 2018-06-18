@@ -1,6 +1,7 @@
 
 module.exports = {
-	browserSync: {
-		proxy: 'https://mysite.com'
-	}
+	// EG:
+	// browserSync: {
+	// 	proxy: 'https://mysite.com'
+	// }
 };

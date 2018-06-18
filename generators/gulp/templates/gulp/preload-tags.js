@@ -2,14 +2,22 @@
 const fs = require('fs');
 const twConfig = require('../tailwind');
 const config = require('../gulpfile.config');
+const mkdirp = require('mkdirp');
+const getDirName = require('path').dirname;
 
 module.exports = function() {
 	return new Promise(function (resolve, reject) {
 		var text = "";
 
-		// Make the directory, if it doesnt exist, writeFile won't make a folder
-		if (!fs.existsSync(dir)){
-		    fs.mkdirSync(dir);
+	
+
+
+		function writeFile(path, contents, cb) {
+		  mkdirp(getDirName(path), function (err) {
+		    if (err) return cb(err);
+
+		    fs.writeFile(path, contents, cb);
+		  });
 		}
 
 		twConfig.fontPaths.forEach( def => {
@@ -23,7 +31,7 @@ module.exports = function() {
 
 		});
 
-		fs.writeFile( config.dest.preload, text.trim(), (err) => {
+		writeFile( config.dest.preload, text.trim(), (err) => {
 			if (err) {
 				console.error("Couldn't write preload file");
 				reject();

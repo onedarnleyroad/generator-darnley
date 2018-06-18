@@ -50,6 +50,9 @@ gulp.task('vendor', vendor );
 const styles = require('./gulp/styles');
 gulp.task('styles', styles );
 
+const report = require('./gulp/report');
+gulp.task('report', report );
+
 
 /* Preload tags ----------------------------------- */
 const preloadTags = require('./gulp/preload-tags');
@@ -80,17 +83,27 @@ var spawn = require('child_process').spawn;
 const serve = function() {
 		
 	scripts.watcher();
-	
 
 	function refresh() {
-
 		var child = spawn('gulp', ['styles', '--color'], { stdio: 'pipe' });
 		child.stdout.pipe(process.stdout);
+		child.stderr.pipe(process.stdout);
 	}
 
-	gulp.watch( config.src.css, refresh );
+	gulp.watch( config.src.css )
+		.on('change', refresh );
 
-	gulp.watch( config.src.svg, gulp.parallel('svg') );
+	gulp.watch( './tailwind.js' )
+		.on('change', gulp.parallel( refresh, report ) );
+
+	gulp.watch( './src/config/**/*.js' )
+		.on('change', gulp.parallel( refresh, report ) );
+
+	gulp.watch( './src/tailwind/**/*.js' )
+		.on('change', gulp.parallel( refresh, report ) );
+
+	gulp.watch( config.src.svg )
+		.on('change', gulp.parallel('svg') );
 		
 	browserSync( config.browserSync );
 

@@ -135,11 +135,39 @@ const docReady = function(fn) {
 	}
 };
 
+const onClick = function( selector, callback ) {
+
+	docReady( () => {
+		if (!selector) { return; }
+
+		if (typeof callback != 'function') {
+			console.warn("callback was not a function");
+			return false;
+		}
+
+		var _bind = function( el, cb ) {
+			var fn = cb.bind( el );
+			el.addEventListener('click', ( e ) => {
+				fn( e );
+			});
+		};
+
+		if ( selector instanceof HTMLElement ) {
+			_bind( selector, callback );
+		} else {
+			qsa( selector, ( el ) => {
+				_bind( el, callback );
+			});
+		}
+	});
+};
+
 
 module.exports = {
 	serialize,
 	docReady,
 	initResizeEvents,
 	onSrcLoad,
+	onClick,
 	qsa
 };

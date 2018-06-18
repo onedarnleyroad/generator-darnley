@@ -36,7 +36,7 @@ const createBundle = function( watcher, entry, reject ) {
 			.bundle()
 			.on('error', function (error) {
 				console.log('error:', error.message );
-				if ( reject ) {
+				if ( typeof reject === 'function' ) {
 					reject();
 				}
 				this.emit('end');
@@ -176,8 +176,11 @@ const compile = function( done ) {
 	return new Promise(function (resolve, reject) {
 		Promise.all( tasks ).then( () => {
 			resolve();
-		});
-	});	
+		})
+		.catch(reason => { 
+			reject();
+		});;
+	});
 
 	
 };

@@ -22,6 +22,9 @@ let _exports = {
     	vendor: './src/vendor/**/*.{css,js,gif,eot,jpg,png,svg,otf,ttf,woff,woff2}',
 	},
 
+	// Ready by purge css in styles.
+	purgecss: ['craft/templates/**/*.html'],
+
 	dest: {	
 		js:  [ publicAssets + 'js', 	craftReadonly + 'js'],
 		css: [ publicAssets + 'css', 	craftReadonly + 'css'],
@@ -29,7 +32,8 @@ let _exports = {
 		email: craftReadonly + 'email',
 		img: publicAssets + 'img',
 		vendor: publicAssets + 'vendor',
-		preload: craftReadonly + 'html'
+		preload: craftReadonly + 'html/preload.html',
+		tailwindReport: craftReadonly + 'html/tailwind-report.html'
 	},
 
 	emailCssFile: craftReadonly + 'css/email-inline.css',

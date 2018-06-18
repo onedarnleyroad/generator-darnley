@@ -21,6 +21,7 @@ module.exports = class extends Generator {
       		{  });
 
 	 	const pkgJson = {
+	 		"browserify-shim":{},
 			devDependencies: {
     			"babelify": "^8.0.0",
     			"gulp-rimraf":"latest",
@@ -29,12 +30,15 @@ module.exports = class extends Generator {
 		   		"browserify-shim": "^3.8.14",
     			"browser-sync": "^2.18.13",
     			"gulp-babel-minify": "^0.2.0",
+    			"gulp-imagemin": "^4.1.0",
+    			"showdown": "^1.8.6",
     			"cssnano": "^3.10.0",
 		   		'gulp': '^4.0.0',
 		   		"clear-module": "^2.1.0",
 		   		"gulp-changed": "^1.3.2",
 		   		"gulp-load-plugins": "^1.5.0",
     			"gulp-sass-vars": "^1.3.0",
+    			"gulp-juice": "^0.1.0",
     			"gulp-sass": "^4.0.1",
     			"gulp-sourcemaps": "^2.6.4",
     			"gulp-svg-symbols": "^2.0.2",
@@ -50,6 +54,8 @@ module.exports = class extends Generator {
     			"vinyl-buffer": "^1.0.0",
     			'gulp-print': "latest",
 				"vinyl-source-stream": "^2.0.0",
+				"gulp-purgecss": "^0.14.0",
+				"mkdirp": "latest"
 			}
 		};
 
