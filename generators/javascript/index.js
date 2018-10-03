@@ -15,18 +15,19 @@ module.exports = class extends Generator {
 
 	writing() {
 		
-	 	this.fs.copyTpl(
+	 	this.fs.copy(
 	    	this.templatePath('src/'),
 	    	this.destinationPath('src/'),
       		{  });
 
 	 	const pkgJson = {
 			devDependencies: {
-				"axios": "^0.17.1",
-				"lazysizes": "^4.0.1",
-				"loadjs": "^3.5.1",
-				"fontfaceobserver": "^2.0.13",
-				"promise-polyfill": "^6.1.0"
+				'vue': 'latest',
+				'loadjs': 'latest',
+				'lazysizes': 'latest',
+				'axios': 'latest',
+				'fontfaceobserver': 'latest',
+				'promise-polyfill': 'latest',
 			}
 		};
 

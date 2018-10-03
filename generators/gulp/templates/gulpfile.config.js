@@ -10,11 +10,36 @@ const public 	= 'public';
 const assets 	= 'assets';
 const publicAssets = public + '/' + assets + '/';
 const proxy	= 'https://mysite.com';
+const path = require("path");
 
 let _exports = {
 
+	webpack: {
+
+		scripts: [
+			'inlined',
+			'app',
+		],
+
+		// Will be added to scripts, eg
+		// app -> ./src/js/app.js
+		scriptRoot: './src/js/',
+
+		output: {
+			publicPath: '/assets/js/',
+			path: path.resolve(__dirname, "public/assets/js/")
+		},
+
+		scriptDest: './public/assets/js/',
+
+		// Template to generate webpack script tags.
+		htmlTemplate: './src/webpack.html',
+		htmlDestination: `${__dirname}/templates/_readonly/html/`
+
+	},
+
 	src: {
-		js: '{./src/js/*.js,./src/js/polyfills/*.js}',
+		// js: '{./src/js/*.js,./src/js/polyfills/*.js}',
 		css: './src/scss/**/*.scss',
 		email: './src/email/**/*.html',
 		svg: './src/svg/**/*.svg',
@@ -57,7 +82,24 @@ let _exports = {
 
 		// don't automatically open a browser - usually I might start or stop gulp,
 		// so I don't want to have to keep opening and closing tabs.
-		open: false
+		open: false,
+
+		// rewrite any webpack files to the port on the webpack dev server.
+		rewriteRules: [{
+			// eg /assets/js/app.js becomes https://localhost:9000/assets/js/app.js
+			match: /\/assets\/js\/(.+)\.js/g,
+			// match: 'Loading',
+			fn: (req, res, match) => {
+				return `https://localhost:9000${match}`;
+			}
+
+		}],
+
+		// Avoid CORS issues on Craft CMS:
+		middleware: function (req, res, next) {
+			res.setHeader('Access-Control-Allow-Origin', '*');
+			next();
+		},
     },
 
 };

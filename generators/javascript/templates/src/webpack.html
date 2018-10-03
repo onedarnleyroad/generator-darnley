@@ -1,0 +1,18 @@
+<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+	<% if (chunk == 'inlined' && htmlWebpackPlugin.options.production) { %>
+	<script>
+		<% for (var prop in compilation.assets) { %>
+			<% var m = new RegExp(`^${chunk}`);  %>
+			<% if (m.test(prop)) { %>
+				<%= compilation.assets[ prop ].source() %>
+			<% } %>
+		<% } %>
+	</script>
+	<% } else { %>
+		<% var filename = htmlWebpackPlugin.files.chunks[chunk].entry; %>
+		<% if (htmlWebpackPlugin.options.production) { %>
+			<% filename = htmlWebpackPlugin.files.chunks[chunk].entry.replace('.js', '.v{{oneconfig.version}}.js') %> 
+		<% } %>
+		<script async type="text/javascript" src="<%= filename %>"></script>
+	<% } %>
+<% } %>

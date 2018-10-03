@@ -10,9 +10,9 @@ const $ = gulpLoadPlugins();
 /* IMAGES --------------------------------------- */
 const images = function () {
 
-	return gulp.src( config.src.img )
+	return gulp.src(config.src.img)
 		// Only send through changed files, as this is a somewhat 'heavy' operation
-		.pipe($.changed( config.dest.img ))
+		.pipe($.changed(config.dest.img))
 
 		// need to configure this to our tastes.
 		.pipe($.imagemin([
@@ -20,59 +20,85 @@ const images = function () {
 		]))
 
 		// save output to public
-		.pipe(gulp.dest( config.dest.img ));
+		.pipe(gulp.dest(config.dest.img));
 };
-gulp.task('images', images );
+gulp.task('images', images);
 
 /* VENDOR --------------------------------------- */
-const vendor = function() {
-	
+const vendor = function () {
+
 	let destinations = config.dest.vendor;
 
-	let pipeline = gulp.src( config.src.vendor )
-		.pipe($.changed( config.src.vendor ));
+	let pipeline = gulp.src(config.src.vendor)
+		.pipe($.changed(config.src.vendor));
 
-		// go through multiple destinations:
-	if ( Array.isArray( destinations ) ) {
-		destinations.forEach( d => {
-			pipeline = pipeline.pipe(gulp.dest( d ));
-		});	
+	// go through multiple destinations:
+	if (Array.isArray(destinations)) {
+		destinations.forEach(d => {
+			pipeline = pipeline.pipe(gulp.dest(d));
+		});
 	} else {
-		pipeline = pipeline.pipe(gulp.dest( destinations ));
+		pipeline = pipeline.pipe(gulp.dest(destinations));
 	}
-		
+
 	return pipeline;
 
 };
-gulp.task('vendor', vendor );
+gulp.task('vendor', vendor);
 
 /* STYLES --------------------------------------- */
 const styles = require('./gulp/styles');
-gulp.task('styles', styles );
+gulp.task('styles', styles);
 
 const report = require('./gulp/report');
-gulp.task('report', report );
+gulp.task('report', report);
 
 
 /* Preload tags ----------------------------------- */
 const preloadTags = require('./gulp/preload-tags');
-gulp.task('preload-tags', preloadTags );
+gulp.task('preload-tags', preloadTags);
 
 /* SCRIPTS --------------------------------------- */
-const scripts = require('./gulp/scripts');
-gulp.task('scripts', scripts.compile );
+// const scripts = require('./gulp/scripts');
+// gulp.task('scripts', scripts.compile );
+
+/* WEBPACK --------------------------------------- */
+const webpackConfigGenerator = require('./webpack.config');
+const webpackTools = require('./gulp/webpack');
+
+gulp.task('webpack', gulp.parallel(
+	// Dev
+	webpackTools.build(webpackConfigGenerator(false)),
+	// Production
+	webpackTools.build(webpackConfigGenerator(true))
+));
+
+gulp.task('webpack:dev', gulp.series(
+	// Dev
+	webpackTools.build( webpackConfigGenerator(false) ),
+));
+
+gulp.task('webpack:production', gulp.series(
+	// Dev
+	webpackTools.build( webpackConfigGenerator(true) ),
+));
+
+gulp.task('webpack-server', gulp.series(
+	webpackTools.server( webpackConfigGenerator(false) )
+));
+
 
 /* EMAIL --------------------------------------- */
 const email = require('./gulp/email');
-gulp.task('email', gulp.series( 'styles', email ) );
+gulp.task('email', gulp.series('styles', email));
 
 /* SVG --------------------------------------- */
 const svg = require('./gulp/svg');
-gulp.task('svg', svg );
+gulp.task('svg', svg);
 
 /* CLEAN --------------------------------------- */
 const clean = require('./gulp/clean');
-gulp.task('clean', clean );
+gulp.task('clean', clean);
 
 /* SERVE --------------------------------------- */
 // Launch browser sync
@@ -80,9 +106,8 @@ gulp.task('clean', clean );
 
 var spawn = require('child_process').spawn;
 
-const serve = function() {
-		
-	scripts.watcher();
+const serve = function () {
+
 
 	function refresh() {
 		var child = spawn('gulp', ['styles', '--color'], { stdio: 'pipe' });
@@ -90,33 +115,32 @@ const serve = function() {
 		child.stderr.pipe(process.stdout);
 	}
 
-	gulp.watch( config.src.css )
-		.on('change', refresh );
+	gulp.watch(config.src.css)
+		.on('change', refresh);
 
-	gulp.watch( './tailwind.js' )
-		.on('change', gulp.parallel( refresh, report ) );
+	gulp.watch('./tailwind.js')
+		.on('change', gulp.parallel(refresh, report));
 
-	gulp.watch( './src/config/**/*.js' )
-		.on('change', gulp.parallel( refresh, report ) );
+	gulp.watch('./src/config/**/*.js')
+		.on('change', gulp.parallel(refresh, report));
 
-	gulp.watch( './src/tailwind/**/*.js' )
-		.on('change', gulp.parallel( refresh, report ) );
+	gulp.watch('./src/tailwind/**/*.js')
+		.on('change', gulp.parallel(refresh, report));
 
-	gulp.watch( config.src.svg )
-		.on('change', gulp.parallel('svg') );
-		
-	browserSync( config.browserSync );
+	gulp.watch(config.src.svg)
+		.on('change', gulp.parallel('svg'));
+
+	browserSync(config.browserSync);
 
 };
 
-gulp.task('serve', serve );
-
+gulp.task("serve", gulp.series('webpack-server', serve));
 
 
 /* BUILD --------------------------------------- */
-const build = gulp.parallel( 'preload-tags', 'scripts', 'styles', 'images', 'email', 'svg', 'vendor' );
-gulp.task('default', build );
+const build = gulp.parallel('preload-tags', 'webpack', 'styles', 'images', 'email', 'svg', 'vendor');
+gulp.task('default', build);
 
-gulp.task( 'rebuild', gulp.series( clean, build ) );
+gulp.task('rebuild', gulp.series(clean, build));
 
 
